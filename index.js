@@ -99,11 +99,11 @@ function promptAction(){
 
 function startTimers(){
     const envTick = setInterval(()=>{
-        pet.hunger += 0.5
-        pet.fatigue += 0.5
-        pet.cleanliness -= 0.5
+        pet.hunger += 1
+        pet.fatigue += 1
+        pet.cleanliness -= 1
         evalPet(true)
-    }, 30000)
+    }, 120000)
 
     const ageTick = setInterval(()=>{
         pet.age++
@@ -114,7 +114,7 @@ function startTimers(){
 function init(){
     inquirer.prompt(petQuestions).then((a)=>{
         const {petName, petType} = a
-         pet = new Pet(petName, petType, 0, 0, 10, 1, 10, false, true)
+         pet = new Pet(petName, petType, 0, 0, 10, 1, 10, true, true)
          console.log(`Congrats on your new pet ${petName} the ${petType}`.green )
 
 
@@ -129,19 +129,23 @@ function init(){
 
 function evalPet(timer){
     
+
+    if (!timer){
+        setTimeout(()=>{
+            console.clear()
+        }, 3500)
+        
+        setTimeout(promptAction, 3600)
+    }
+
+
     //hunger check
     if (pet.hunger >= 3 && pet.hunger < 5){
-        console.log(`${pet.name} the ${pet.type}'s stomach growls hungrily`.yellow)
-        pet.happiness--
+        console.log('\n' + '['.green + 'Hunger'.red + ']:'.green +`${pet.name} the ${pet.type}'s stomach growls hungrily.`.yellow)
     }else if (pet.hunger >=5 && pet.hunger < 8){
-        console.log(`${pet.name} the ${pet.type}'s looks a little sluggish.`.yellow)
-        pet.happiness--
-        pet.happiness--
+        console.log('\n' + '['.green + 'Hunger'.red + ']:'.green +`${pet.name} the ${pet.type} looks a little sluggish.`.yellow)
     }else if (pet.hunger >= 8 && pet.hunger < 10){
-        console.log(`${pet.name} the ${pet.type}'s is curled up on the floor holding their stomache.`.red)
-        pet.happiness--
-        pet.happiness--
-        pet.happiness--
+        console.log('\n' + '['.green + 'Hunger'.red + ']:'.green +`${pet.name} the ${pet.type}'s is curled up on the floor holding their stomache.`.red)
     }else if (pet.hunger >= 10){
         pet.alive = false
         funeralTime()
@@ -149,30 +153,31 @@ function evalPet(timer){
 
     //fatigue check
     if (pet.fatigue >= 3 && pet.fatigue < 5 && pet.awake === true){
-        console.log(`${pet.name} the ${pet.type}'s lets out a mighty yawn.`.yellow)
-        pet.happiness--
+        console.log('\n' + '['.green + 'Tired'.red + ']:'.green +` ${pet.name} the ${pet.type} lets out a mighty yawn.`.yellow)
     }else if (pet.fatigue >=5 && pet.fatigue < 8 && pet.awake === true){
-        console.log(`${pet.name} the ${pet.type}'s eyes begin to droop heavily.`.yellow)
-        pet.happiness--
-        pet.happiness--
+        console.log('\n' + '['.green + 'Tired'.red + ']:'.green +`${pet.name} the ${pet.type}'s eyes begin to droop heavily.`.yellow)
+
     }else if (pet.fatigue >= 8 && pet.fatigue < 10 && pet.awake === true){
-        console.log(`${pet.name} the ${pet.type}'s is curled up on the floor holding their stomache.`.red)
-        pet.happiness--
-        pet.happiness--
-        pet.happiness--
+        console.log('\n' + '['.green + 'Tired'.red + ']:'.green +`${pet.name} the ${pet.type} looks exhausted.`.red)
+        pet.awake = false
     }else if (pet.fatigue >= 10){
         pet.alive = false
         funeralTime()
     }
 
+    //happy check
+    if (pet.happiness <=7 && pet.happiness >5 && pet.awake === true){
+        console.log('\n' + '['.green + 'Happiness'.red + ']:'.green +`${pet.name} the ${pet.type} .`.yellow)
+    }else if (pet.happiness <=5 && pet.happiness >3 && pet.awake === true){
+        console.log('\n' + '['.green + 'Happiness'.red + ']:'.green +`${pet.name} the ${pet.type}'s eyes begin to droop heavily.`.yellow)
+    }else if (pet.happiness <=3 && pet.happiness >0 && pet.awake === true){
+        console.log('\n' + '['.green + 'Happiness'.red + ']:'.green +`${pet.name} the ${pet.type} looks exhausted.`.red)
+        pet.awake = false
+    }else if (pet.happiness <=0){
+        pet.alive = false
+        funeralTime()
+    }
 
-    if (!timer){
-    setTimeout(()=>{
-        console.clear()
-    }, 3000)
-    
-    setTimeout(promptAction, 3100)
-}
 
 }
 
@@ -197,29 +202,29 @@ function actions(action){
 
 
     if (action === 'play'){
-        console.log(actionLines.playLines[rndLine].brightGreen)
+        console.log('\n'+actionLines.playLines[rndLine].brightGreen)
             pet.fatigue++
             pet.hunger+= 0.5
             pet.happiness++
             pet.cleanliness--
     }else if (action === 'hug'){
-            console.log(actionLines.hugLines[rndLine].brightGreen)
+            console.log('\n'+actionLines.hugLines[rndLine].brightGreen)
             pet.fatigue--
             pet.happiness++
             pet.happiness++
     }else if (action === 'feed'){
-            console.log(actionLines.feedLines[rndLine].brightGreen)
+            console.log('\n'+actionLines.feedLines[rndLine].brightGreen)
             pet.fatigue--
             pet.hunger--
             pet.hunger--
             pet.happiness++
     }else if (action === 'clean'){
-            console.log(actionLines.cleanLines[rndLine].brightGreen)
+            console.log('\n'+actionLines.cleanLines[rndLine].brightGreen)
             pet.fatigue--
             pet.happiness++
             pet.cleanliness++
     }else if (action === 'sleep'){
-        console.log(actionLines.sleepLines[rndLine].brightGreen)
+        console.log('\n'+actionLines.sleepLines[rndLine].brightGreen)
         pet.happiness++
         pet.awake = false
     }
