@@ -138,7 +138,7 @@ function startTimers(){
     }, 120000)
 
     const ageTick = setInterval(()=>{
-        currentPet.age++
+        currentPet.changeStat('inc', 'age')
     }, 300000)
 }
 
@@ -146,6 +146,16 @@ function startTimers(){
 
 
 async function init(){
+
+//check file exists
+try{
+    await fs.access('./pets.txt')
+}catch(error){
+    if (error){
+        await fs.writeFile('./pets.txt', '[]')
+    }
+}
+
  pets = await fs.readFile('./pets.txt', 'utf-8')
  const petArray = JSON.parse(pets)
 

@@ -1,1 +1,1 @@
-[{"name":"JJ","type":"Cat","hunger":0.5,"fatigue":1,"cleanliness":10,"age":1,"happiness":10,"awake":true,"alive":true},{"name":"Joe","type":"Dog","hunger":0.5,"fatigue":1,"cleanliness":10,"age":1,"happiness":10,"awake":true,"alive":true}]
+[{"name":"Joe","type":"Cat","hunger":0.5,"fatigue":1,"cleanliness":10,"age":1,"happiness":10,"awake":true,"alive":true}]
